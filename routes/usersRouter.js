@@ -36,7 +36,7 @@ usersRouter.post('/user/add', (req, res) => {
             lastName,
             telephone,
             address,
-            hobbies : hobbies.split(",")
+            hobbies 
         }
         
         usersList.push(addNewUser);
@@ -44,8 +44,7 @@ usersRouter.post('/user/add', (req, res) => {
     }
 });
 
-
-// update user
+// Update user
 usersRouter.put('/user/edit/:id', (req, res) => {
     const {id} = req.params;
 
@@ -77,6 +76,22 @@ usersRouter.put('/user/edit/:id', (req, res) => {
         }
         
         return res.status(200).json(getUser);
+    }
+})
+
+// Delete user
+usersRouter.delete('/user/delete/:id', (req, res) => {
+    const {id} = req.params;
+    const getUser = usersList.find(user => user.id === parseInt(id));
+
+    if(!getUser){
+        return res.status(404).json({message : `Utilisateur introuvable`})
+    }else{
+        const getUserIndex = usersList.indexOf(getUser);
+        
+        usersList.splice(getUserIndex, 1);
+        
+        return res.status(200).json({message : `L'utilisateur ${getUser.firstName} à bien été supprimé`})
     }
 })
 
